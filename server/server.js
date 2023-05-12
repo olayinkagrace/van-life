@@ -5,8 +5,10 @@ const mongoose = require('mongoose')
 
 const userRouter = require('./routes/userRoutes')
 const vanRouter = require('./routes/vanRoutes')
+var cors = require('cors')
 
 // middlewares
+app.use(cors())
 app.use(express.json());
 app.use((req, res,next) => {
     console.log(req.path, req.method)
