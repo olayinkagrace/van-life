@@ -3,6 +3,7 @@ const Van = require('../models/vanModel')
 const User = require('../models/userModel') 
 
  const getAllVans = async (req, res) => {
+  const user_id = req.user._id
   let vans;
   try {
     vans = await Van.find().populate("user");
@@ -13,6 +14,7 @@ const User = require('../models/userModel')
     return res.status(404).json({ message: "No Vans Found" });
   }
   return res.status(200).json({ vans });
+ 
 };
 
  const addVan = async (req, res) => {

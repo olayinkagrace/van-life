@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const User = require("../models/userModel");
+const Van = require("../models/vanModel");
 const jwt = require("jsonwebtoken");
 
 const createToken = (_id) => {
@@ -26,6 +27,20 @@ const getUserById = async (req, res) => {
   let userVans;
   try {
     userVans = await User.findById(userId).populate("vans");
+  } catch (err) {
+    return console.log(err);
+  }
+  if (!userVans) {
+    return res.status(404).json({ message: "No Van Found" });
+  }
+  return res.status(200).json({ user: userVans });
+};
+
+const getUserByVan = async (req, res) => {
+  const vanId = req.params.id;
+  let userVans;
+  try {
+    userVans = await Van.findById(vanId).populate("user");
   } catch (err) {
     return console.log(err);
   }
@@ -64,6 +79,7 @@ const login = async (req, res, next) => {
 module.exports = {
   getAllUsers,
   getUserById,
+  getUserByVan,
   signup,
   login,
 };

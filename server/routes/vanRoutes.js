@@ -12,8 +12,8 @@ const requireAuth = require('../middlewares/requireAuth')
 
 
 
-router.get("/",  getAllVans);
-router.get("/:id", getVanById);
+router.get("/", requireAuth,  getAllVans);
+router.get("/:id",requireAuth, getVanById);
 router.post("/", requireAuth, addVan);
 router.put("/:id", requireAuth, updateVan);
 router.delete("/:id", requireAuth, deleteVan);

@@ -2,18 +2,23 @@ import { Button, Card, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
 import home from "../assets/about.png";
+import {useAuthContext} from '../hooks/useAuthContext'
 
 
 function VanDetails() {
     const {id} = useParams()
+    const {user} = useAuthContext()
     const [van, setVan] = useState([]);
 
     useEffect(() => {
-      fetch(`http://localhost:4000/api/vans/${id}`)
+      fetch(`http://localhost:4000/api/vans/${id}`, {
+        headers: {
+            'Authorization': `Bearer ${user.token}`
+        }
+     })
         .then((res) => res.json())
         .then((data) => setVan(data.van));
-    }, [id]);
-    console.log(van)
+    }, [id, user]);
   return (
     <div>
      {van ? (

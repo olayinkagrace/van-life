@@ -16,7 +16,7 @@ app.use((req, res,next) => {
 })
 
 
-app.use("/api/user", userRouter);
+app.use("/api/host", userRouter);
 app.use("/api/vans", vanRouter);
 
 
