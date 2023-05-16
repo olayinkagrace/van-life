@@ -1,38 +1,85 @@
-import { Button, Card, Typography } from "@mui/material";
-import home from "../assets/about.png";
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import {useAuthContext} from '../hooks/useAuthContext'
+import { Card, Typography } from "@mui/material";
+import { Link, useSearchParams } from "react-router-dom";
+import { useLoaderData } from "react-router-dom";
+import { getVans } from "../hooks/Api";
+
+export function loader() {
+  return getVans();
+}
 
 function Vans() {
-  const {user} = useAuthContext()
-  const [vans, setVans] = useState([]);
-  useEffect(() => {
-    fetch("http://localhost:4000/api/vans", {
-      headers: {
-          'Authorization': `Bearer ${user.token}`
-      }
-   })
-      .then((res) => res.json())
-      .then((data) => setVans(data.vans));
-  }, [user]);
-  const vanElements = vans.map((van) => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const typeFilter = searchParams.get("type");
+  const vans = useLoaderData()
+
+  const displayElements = typeFilter
+    ? vans.filter((theVan) => theVan.type === typeFilter)
+    : vans;
+
+  const vanElements = displayElements.map((van) => {
     return (
       <Card key={van._id}>
-        <Link to={`/vans/${van._id}`}>
-        <img width={"100%"} src={home} alt='home-image' />
-        <Typography>{van.name}</Typography>
-        <Typography>${van.price}/day</Typography>
-        <Button sx={{ bgcolor: "red", color: "white", margin: "5px" }}>
-          {van.type}
-        </Button></Link>
+        <Link
+          to={van._id}
+          state={{ search: searchParams.toString(), type: typeFilter }}
+        >
+          <img width={"100%"} src={van.imageUrl} />
+          <Typography>{van.name}</Typography>
+          <Typography>${van.price}/day</Typography>
+          <button>{van.type}</button>
+        </Link>
       </Card>
     );
   });
-  return <>
-  <h1>Explore our van options</h1>
-  {vanElements}
-  </>;
+
+  function handleFilterChange(key, value) {
+    setSearchParams((prevParams) => {
+      if (value === null) {
+        prevParams.delete(key);
+      } else {
+        prevParams.set(key, value);
+      }
+      return prevParams;
+    });
+  }
+
+  return (
+    <>
+      <h1>Explore our van options</h1>
+      <div>
+        <button
+          onClick={() => handleFilterChange("type", "simple")}
+          className={`van-type simple ${
+            typeFilter === "simple" ? "selected" : ""
+          }`}
+        >
+          simple
+        </button>
+        <button
+          onClick={() => handleFilterChange("type", "rugged")}
+          className={`van-type rugged ${
+            typeFilter === "rugged" ? "selected" : ""
+          }`}
+        >
+          rugged
+        </button>
+        <button
+          onClick={() => handleFilterChange("type", "luxury")}
+          className={`van-type luxury ${
+            typeFilter === "luxury" ? "selected" : ""
+          }`}
+        >
+          luxury
+        </button>
+        {typeFilter ? (
+          <button onClick={() => handleFilterChange("type", null)}>
+            clear
+          </button>
+        ) : null}
+      </div>
+      {vanElements}
+    </>
+  );
 }
 
 export default Vans;

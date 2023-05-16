@@ -8,11 +8,12 @@ const {
   login,
   signup,
 } = require("../controllers/userController");
+const requireAuth = require('../middlewares/requireAuth')
 
 
-router.get("/", getAllUsers);
-router.get("/:id", getUserById);
-router.get("/vans/:id", getUserByVan);
+router.get("/", requireAuth, getAllUsers);
+router.get("/:id",requireAuth, getUserById);
+router.get("/vans/:id",requireAuth, getUserByVan);
 router.post("/signup", signup);
 router.post("/login", login);
 

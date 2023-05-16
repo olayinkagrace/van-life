@@ -3,10 +3,10 @@ const Van = require('../models/vanModel')
 const User = require('../models/userModel') 
 
  const getAllVans = async (req, res) => {
-  const user_id = req.user._id
+  // const user_id = req.user._id
   let vans;
   try {
-    vans = await Van.find().populate("user");
+    vans = await Van.find().populate("user").sort({createdAt: -1});
   } catch (err) {
     return console.log(err);
   }

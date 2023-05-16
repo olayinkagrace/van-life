@@ -1,40 +1,57 @@
-import { AppBar, Box, Toolbar, Typography } from "@mui/material";
-import {  NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
+import { useAuthContext } from "../hooks/useAuthContext";
+import { useLogout } from "../hooks/useLogout";
+import icon from "../assets/icon.png";
 
 function NavbarComponent() {
+  const { user } = useAuthContext();
+  const { logout } = useLogout();
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    logout();
+  };
+
+  const activeStyles = {
+    fontWeight: "bold",
+    textDecoration: "underline",
+    color: "#161616",
+  };
+
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar
-        sx={{ bgcolor: "transparent", color: "black", position: "static" }}
-      >
-        <Toolbar>
-          <NavLink to='/'  className={({ isActive }) => (isActive ? "my-link" : null)}>
-            <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
-              #VanLife
-            </Typography>
-          </NavLink>
+    <header>
+      <Link className='site-logo' to='/'>
+        #VanLife
+      </Link>
+      <nav>
+        {user && (
           <NavLink
-            to='/host'
-            className={({ isActive }) => (isActive ? "my-link" : null)}
+            to='host'
+            style={({ isActive }) => (isActive ? activeStyles : null)}
           >
-            {" "}
             Host
           </NavLink>
-          <NavLink
-            to='/about'
-            className={({ isActive }) => (isActive ? "my-link" : null)}
-          >
-            About
-          </NavLink>
-          <NavLink
-            to='/vans'
-            className={({ isActive }) => (isActive ? "my-link" : null)}
-          >
-            Vans
-          </NavLink>
-        </Toolbar>
-      </AppBar>
-    </Box>
+        )}
+        <NavLink
+          to='about'
+          style={({ isActive }) => (isActive ? activeStyles : null)}
+        >
+          About
+        </NavLink>
+        <NavLink
+          to='vans'
+          style={({ isActive }) => (isActive ? activeStyles : null)}
+        >
+          Vans
+        </NavLink>
+        {!user && (
+          <Link to='login'>
+            <img src={icon} className='login-icon' />
+          </Link>
+        )}
+        {user && <button onClick={handleClick}>Log Out</button>}
+      </nav>
+    </header>
   );
 }
 
