@@ -16,7 +16,7 @@ export const useLogin = () => {
         setIsloading(true)
         setError(null)
 
-        const response = await fetch('http://localhost:4000/api/host/login', {
+        const response = await fetch('https://vanlife-564b.onrender.com/api/host/login', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({email, password})
