@@ -8,14 +8,14 @@ function HostVanDetails() {
   const { user } = useAuthContext();
   const [van, setVan] = useState([]);
 
-  const activeStyle = {
+  const activeStyles = {
     fontWeight: "bold",
     textDecoration: "underline",
     color: "#FF8C38;",
   };
 
   useEffect(() => {
-    fetch(`http://localhost:4000/api/host/vans/${id}`, {
+    fetch(`https://vanlife-564b.onrender.com/api/host/vans/${id}`, {
       headers: {
         Authorization: `Bearer ${user.token}`,
       },
@@ -28,37 +28,51 @@ function HostVanDetails() {
   }
   return (
     <section>
-      <Link to='..' relative="path">Back to all vans</Link>
-      <div>
-        <img src={van.imageUrl} alt={`photo of ${van.name}`} width='200px' />
-        <h2>{van.name}</h2>
-        <p>{van.type}</p>
-        <p>{van.price}</p>
-      </div>
-      <nav>
-        <NavLink
-          to='.'
-          end
-          style={({ isActive }) => (isActive ? { activeStyle } : null)}
-        >
-          Details
-        </NavLink>
-        <NavLink
-          to='pricing'
-          style={({ isActive }) => (isActive ? { activeStyle } : null)}
-        >
-          Pricing
-        </NavLink>
-        <NavLink
-          to='photo'
-          style={({ isActive }) => (isActive ? { activeStyle } : null)}
-        >
-          Photo
-        </NavLink>
-      </nav>
-      <Outlet context={{ van }} />
+        <Link
+            to=".."
+            relative="path"
+            className="back-button"
+        >&larr; <span>Back to all vans</span></Link>
+
+        <div className="host-van-detail-layout-container">
+            <div className="host-van-detail">
+                <img src={van.imageUrl} />
+                <div className="host-van-detail-info-text">
+                    <i
+                        className={`van-type van-type-${van.type}`}
+                    >
+                        {van.type}
+                    </i>
+                    <h3>{van.name}</h3>
+                    <h4>${van.price}/day</h4>
+                </div>
+            </div>
+
+            <nav className="host-van-detail-nav">
+                <NavLink
+                    to="."
+                    end
+                    style={({ isActive }) => isActive ? activeStyles : null}
+                >
+                    Details
+                </NavLink>
+                <NavLink
+                    to="pricing"
+                    style={({ isActive }) => isActive ? activeStyles : null}
+                >
+                    Pricing
+                </NavLink>
+                <NavLink
+                    to="photo"
+                    style={({ isActive }) => isActive ? activeStyles : null}
+                >
+                    Photos
+                </NavLink>
+            </nav>
+            <Outlet context={{ van }} />
+        </div>
     </section>
-  );
+)
 }
 
 export default HostVanDetails;

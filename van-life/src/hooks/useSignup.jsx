@@ -14,11 +14,14 @@ export const useSignup = () => {
     setIsloading(true);
     setError(null);
 
-    const response = await fetch("https://vanlife-564b.onrender.com/api/host/signup", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({name, email, password }),
-    });
+    const response = await fetch(
+      "https://vanlife-564b.onrender.com/api/host/signup",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password }),
+      }
+    );
 
     const json = await response.json();
 
@@ -35,7 +38,7 @@ export const useSignup = () => {
       // update the auth context
       dispatch({ type: "LOGIN", payload: json });
       setIsloading(false);
-      navigate('login');
+      navigate("/");
     }
   };
   return { signup, isLoading, error };

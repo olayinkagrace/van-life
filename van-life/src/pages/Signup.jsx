@@ -1,47 +1,68 @@
-import  { useState } from 'react'
-import { useSignup } from '../hooks/useSignup'
+import { useState } from "react";
+import { useSignup } from "../hooks/useSignup";
+import {
+  Form,
+  Link,
+  useActionData,
+  useLoaderData,
+  useNavigation,
+} from "react-router-dom";
 
-function Signup() {
-
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const {signup, isLoading, error} = useSignup()
- 
-
-
-  const handleSubmit = async (e) => {
-      e.preventDefault()
-      await signup(name,email, password)
-  }
-  return (
-    <form className="signup" onSubmit={handleSubmit}>
-    <h3>Sign Up</h3>
-
-    <label>Name:</label>
-    <input 
-        type="name"
-        onChange={(e) => setName(e.target.value)}
-        value={name}
-    />
-
-    <label>Email:</label>
-    <input 
-        type="email"
-        onChange={(e) => setEmail(e.target.value)}
-        value={email}
-    />
-
-    <label>Password:</label>
-    <input 
-        type="password"
-        onChange={(e) => setPassword(e.target.value)}
-        value={password}
-    />
-    <button disabled={isLoading}>Sign Up</button>
-    {error && <div className='error'>{error}</div>}
-</form>
-  )
+//to get the "you must log in first message"
+export function loader({ request }) {
+  return new URL(request.url).searchParams.get("message");
 }
 
-export default Signup
+function Signup() {
+  const { signup, error } = useSignup();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [status, setStatus] = useState("idle");
+  const message = useLoaderData();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setStatus("submitting");
+    await signup(name, email, password);
+    setStatus("idle");
+  };
+  return (
+    <div className="login-container">
+      <h1>Sign up for an account</h1>
+      {message && <h3 className="red">{message}</h3>}
+      {error && <h3 className="red">{error}</h3>}
+
+      <Form className="login-form" onSubmit={handleSubmit}>
+        <label>Name:</label>
+        <input
+          type="text"
+          onChange={(e) => setName(e.target.value)}
+          value={name}
+        />
+        <label>Email:</label>
+        <input
+          type="email"
+          onChange={(e) => setEmail(e.target.value)}
+          value={email}
+        />
+        <label>Password:</label>
+        <input
+          type="password"
+          onChange={(e) => setPassword(e.target.value)}
+          value={password}
+        />
+        <button disabled={status === "submitting"}>
+          {status === "submitting" ? "Signing you up..." : "Sign Up"}
+        </button>
+        <div style={{ marginTop: "10px" }}>
+          <small>
+            Do not havean account?...<Link to="/login">Sign Up</Link>
+          </small>
+        </div>
+      </Form>
+    </div>
+  );
+}
+
+export default Signup;

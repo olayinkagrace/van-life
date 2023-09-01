@@ -3,11 +3,13 @@ import NavbarComponent from "./NavbarComponent";
 import Footer from "./Footer";
 function Layout() {
   return (
-    <div>
-      <NavbarComponent />
-      <Outlet />
-      <Footer />
-    </div>
+    <div className="site-wrapper">
+            <NavbarComponent />
+            <main>
+                <Outlet />
+            </main>
+            <Footer />
+        </div>
   );
 }
 

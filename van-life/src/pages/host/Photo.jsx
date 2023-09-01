@@ -4,7 +4,7 @@ function Photo() {
   const { van } = useOutletContext();
 
   return ( 
-   <img src={van.imageUrl} className="host-van-details-img" width={"300px"} />
+    <img src={van.imageUrl} className="host-van-detail-image" />
   );
 }
 

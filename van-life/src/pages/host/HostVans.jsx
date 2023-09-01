@@ -7,9 +7,10 @@ function HostVans() {
   const [hostVans, setHostVans] = useState([]);
 
   const userId = user._id;
+  
 
   useEffect(() => {
-    fetch(`http://localhost:4000/api/host/${userId}`, {
+    fetch(`https://vanlife-564b.onrender.com/api/host/${userId}`, {
       headers: {
         Authorization: `Bearer ${user.token}`,
       },
@@ -18,29 +19,21 @@ function HostVans() {
       .then((data) => setHostVans(data.user.vans));
   }, [userId, user]);
   const hostVansElements = hostVans.map((van) => (
-    <Link
-      to={van._id}
-      key={van._id}
-      className='host-van-link-wrapper'
-    >
-      <div className='host-van-single'>
-        <img src={van.imageUrl} alt={`photo of ${van.name}`} width="300px" />
-        <div className='host-van-info'>
+    <Link to={van._id} key={van._id} className="host-van-link-wrapper">
+      <div className="host-van-single" key={van.id}>
+        <img src={van.imageUrl} alt={`Photo of ${van.name}`} />
+        <div className="host-van-info">
           <h3>{van.name}</h3>
-          <p>${van.price}</p>
+          <p>${van.price}/day</p>
         </div>
       </div>
     </Link>
   ));
   return (
     <section>
-      <h1>Your listed vans</h1>
-      <div>
-        {hostVans.length > 0 ? (
-          <div>{hostVansElements}</div>
-        ) : (
-          <h2>Loading...</h2>
-        )}
+      <h1 className="host-vans-title">Your listed vans</h1>
+      <div className="host-vans-list">
+        <section>{hostVansElements}</section>
       </div>
     </section>
   );
