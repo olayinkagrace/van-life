@@ -1,23 +1,20 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
-import { useAuthContext } from "../../hooks/useAuthContext";
+
 
 function VanDetails() {
   const { id } = useParams();
   const location = useLocation();
 
-  const { user } = useAuthContext();
   const [van, setVan] = useState([]);
 
   useEffect(() => {
     fetch(`https://vanlife-564b.onrender.com/api/vans/${id}`, {
-      headers: {
-        Authorization: `Bearer ${user.token}`,
-      },
+    
     })
       .then((res) => res.json())
       .then((data) => setVan(data.van));
-  }, [id, user]);
+  }, [id]);
 
   // search and type from  state={{ search: searchParams.toString(), type: typeFilter }} in vans.jsx
   const search = location.state?.search || "";
