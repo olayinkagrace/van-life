@@ -45,7 +45,7 @@ function NavbarComponent() {
           Vans
         </NavLink>
         {!user && (
-          <Link to='signup'>
+          <Link to='login'>
             
             <img src={icon} className='login-icon' />
           </Link>
