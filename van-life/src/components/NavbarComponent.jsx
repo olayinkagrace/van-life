@@ -46,8 +46,10 @@ function NavbarComponent() {
         </NavLink>
         {!user && (
           <Link to='login'>
+            
             <img src={icon} className='login-icon' />
           </Link>
+      <Link to='signup' >signup</Link>
         )}
         {user && <button onClick={handleClick}>Log Out</button>}
       </nav>
