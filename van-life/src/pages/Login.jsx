@@ -46,7 +46,7 @@ function Login() {
         </button>
         <div style={{marginTop: "10px"}}>
           <small>
-            Already have an account?...<Link to="/signup">Login</Link>
+          Do not havean account?...<Link to="/signup">Sign Up</Link>
           </small>
         </div>
       </Form>

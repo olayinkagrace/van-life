@@ -57,7 +57,7 @@ function Signup() {
         </button>
         <div style={{ marginTop: "10px" }}>
           <small>
-            Do not havean account?...<Link to="/login">Sign Up</Link>
+          Already have an account?...<Link to="/login">Login</Link>
           </small>
         </div>
       </Form>
