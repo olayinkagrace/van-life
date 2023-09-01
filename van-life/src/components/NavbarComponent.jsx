@@ -1,7 +1,7 @@
 import { Link, NavLink } from "react-router-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useLogout } from "../hooks/useLogout";
-import icon from "../assets/icon.png";
+import icon from "../assets/Icon.png";
 
 function NavbarComponent() {
   const { user } = useAuthContext();
