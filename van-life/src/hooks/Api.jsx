@@ -1,7 +1,7 @@
 
 
 export async function getVans(){
-  const response = await fetch("http://localhost:4000/api/vans")
+  const response = await fetch("https://vanlife-564b.onrender.com/api/vans")
     if(!response.ok){
       throw{
         message:"failed to fetch vans",
